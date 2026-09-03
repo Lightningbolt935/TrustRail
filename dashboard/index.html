@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrustRail — Adaptive Permission Layer for AI Shopping Agents</title>
+  <meta name="description" content="Adaptive trust-based mandate gating for agentic commerce. Razorpay AI Buildathon 2026 Track 01." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <header class="top-header">
+    <div class="header-left">
+      <div class="logo-mark">
+        <span class="logo-icon">⚡</span>
+        <div class="logo-text">
+          <span class="brand-title">Trust<span class="brand-accent">Rail</span></span>
+          <span class="brand-tag">Adaptive Permission Layer</span>
+        </div>
+      </div>
+      <span class="badge track-badge">Razorpay AI Buildathon 2026 • Track 01</span>
+    </div>
+    
+    <div class="header-right">
+      <div class="agent-selector-wrapper">
+        <label for="agentSelect" class="selector-label">Active Agent:</label>
+        <select id="agentSelect" class="agent-dropdown">
+          <option value="agent_001" selected>Agent 001 (Interactive Demo)</option>
+          <option value="agent_bronze">Agent Bronze (Score 25)</option>
+          <option value="agent_silver">Agent Silver (Score 50)</option>
+          <option value="agent_gold">Agent Gold (Score 85)</option>
+        </select>
+      </div>
+      <button id="btnResetAgent" class="btn btn-secondary btn-sm" title="Reset Agent to Score 50">
+        <span class="icon">🔄</span> Reset State
+      </button>
+      <div class="live-pulse-container" title="System Operational & Gated">
+        <span class="pulse-dot"></span>
+        <span class="live-status-text">Gate Active</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- Hero / Metrics Overview -->
+    <section class="metrics-grid">
+      <!-- Trust Score Card -->
+      <div class="card metric-card score-card">
+        <div class="card-header">
+          <h3>Trust Score</h3>
+          <span id="scoreDeltaBadge" class="delta-badge delta-neutral">±0</span>
+        </div>
+        <div class="score-display-wrapper">
+          <div class="gauge-container">
+            <svg class="gauge-svg" viewBox="0 0 120 120">
+              <circle class="gauge-bg" cx="60" cy="60" r="50" />
+              <circle id="gaugeProgress" class="gauge-fill" cx="60" cy="60" r="50" />
+            </svg>
+            <div class="gauge-content">
+              <span id="scoreValue" class="gauge-number">50</span>
+              <span class="gauge-max">/ 100</span>
+            </div>
+          </div>
+          <div class="score-meta">
+            <div class="meta-row">
+              <span class="meta-label">Deterministic Engine</span>
+              <span class="meta-val highlight-val">Zero LLM in Path</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Clean Rewards</span>
+              <span class="meta-val text-success">+8 pts / txn</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Violation Penalty</span>
+              <span class="meta-val text-danger">-15 pts (Overreach)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Tier Card -->
+      <div class="card metric-card tier-card">
+        <div class="card-header">
+          <h3>Authority Tier</h3>
+          <span id="tierBadge" class="tier-pill tier-silver">SILVER</span>
+        </div>
+        <div class="tier-status-body">
+          <div class="tier-icon-container">
+            <span id="tierEmoji" class="tier-large-icon">🥈</span>
+          </div>
+          <div class="tier-progress-section">
+            <div class="tier-labels">
+              <span class="tier-tag bronze-tag">Bronze (0-39)</span>
+              <span class="tier-tag silver-tag">Silver (40-69)</span>
+              <span class="tier-tag gold-tag">Gold (70-100)</span>
+            </div>
+            <div class="tier-progress-track">
+              <div id="tierProgressBar" class="tier-progress-fill" style="width: 50%;"></div>
+            </div>
+            <p id="tierPromotionHint" class="tier-hint">Need <strong>20 more pts</strong> to unlock Gold Tier</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Mandate & Budget Card -->
+      <div class="card metric-card mandate-card">
+        <div class="card-header">
+          <h3>Live Mandate Limits</h3>
+          <span class="badge rule-badge">Enforced Pre-Razorpay</span>
+        </div>
+        <div class="mandate-details-grid">
+          <div class="limit-box">
+            <span class="limit-title">Single-Txn Cap</span>
+            <span id="mandatePerTxnCap" class="limit-amount">₹2,000</span>
+            <span class="limit-sub">Hard gate cutoff</span>
+          </div>
+          <div class="limit-box">
+            <span class="limit-title">Daily Spend Cap</span>
+            <span id="mandateDailyCap" class="limit-amount">₹5,000</span>
+            <span id="mandateDailyRemaining" class="limit-sub">₹5,000 remaining</span>
+          </div>
+        </div>
+        <div class="category-allowlist-section">
+          <span class="categories-label">Permitted Categories:</span>
+          <div id="categoryTagsContainer" class="category-tags">
+            <span class="cat-tag active">essentials</span>
+            <span class="cat-tag active">apparel</span>
+            <span class="cat-tag active">electronics</span>
+            <span class="cat-tag disabled">luxury (locked)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pitch Video 4-Beat Controller -->
+    <section class="card demo-controller-section">
+      <div class="section-title-bar">
+        <div>
+          <h2>Demo Script Controller (4 Key Beats)</h2>
+          <p class="subtitle">Execute the exact 4-beat pitch script in 45 seconds to showcase deterministic adaptive gating.</p>
+        </div>
+        <span class="badge eval-badge">Track 01 Evaluation Showcase</span>
+      </div>
+
+      <div class="beat-cards-grid">
+        <!-- Beat 1 -->
+        <div class="beat-card" id="cardBeat1">
+          <div class="beat-header">
+            <span class="beat-number">Beat 1</span>
+            <span class="badge badge-success">+8 Score</span>
+          </div>
+          <h4>Clean Transaction</h4>
+          <p class="beat-desc">Purchases Blue Cotton Tee (₹799) within Silver cap. Gate approves & rewards trust.</p>
+          <button id="btnBeat1" class="btn btn-primary btn-block">
+            ▶ Run Beat 1 (Clean Txn)
+          </button>
+        </div>
+
+        <!-- Beat 2 -->
+        <div class="beat-card" id="cardBeat2">
+          <div class="beat-header">
+            <span class="beat-number">Beat 2</span>
+            <span class="badge badge-gold">Tier-Up to Gold</span>
+          </div>
+          <h4>Tier Expansion</h4>
+          <p class="beat-desc">Accumulates clean track record (Score >= 70). Authority unlocks ₹10,000 cap & luxury!</p>
+          <button id="btnBeat2" class="btn btn-gold btn-block">
+            ▶ Run Beat 2 (Promote to Gold)
+          </button>
+        </div>
+
+        <!-- Beat 3 -->
+        <div class="beat-card" id="cardBeat3">
+          <div class="beat-header">
+            <span class="beat-number">Beat 3</span>
+            <span class="badge badge-danger">-15 Penalty</span>
+          </div>
+          <h4>Blocked Overreach</h4>
+          <p class="beat-desc">Attempts ₹8,999 Titanium Watch while Silver. Gate blocks attempt before Razorpay.</p>
+          <button id="btnBeat3" class="btn btn-danger btn-block">
+            ▶ Run Beat 3 (Blocked Overreach)
+          </button>
+        </div>
+
+        <!-- Beat 4 -->
+        <div class="beat-card" id="cardBeat4">
+          <div class="beat-header">
+            <span class="beat-number">Beat 4</span>
+            <span class="badge badge-amber">0 Penalty Abort</span>
+          </div>
+          <h4>Failure Recovery</h4>
+          <p class="beat-desc">Simulated Razorpay timeout: 1 retry → clean abort with <strong>0 trust penalty</strong>!</p>
+          <button id="btnBeat4" class="btn btn-amber btn-block">
+            ▶ Run Beat 4 (Gateway Failure)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-Column Workbench: Agent Runner & Live Audit Trail -->
+    <div class="workbench-grid">
+      <!-- AI Buyer Agent Interactive Terminal -->
+      <section class="card agent-terminal-card">
+        <div class="card-header">
+          <div>
+            <h3>Autonomous AI Buyer Agent</h3>
+            <p class="subtitle">LLM tool-calling loop: list_products → get_product → attempt_purchase</p>
+          </div>
+          <span class="badge badge-tool">3 Strict Tools</span>
+        </div>
+
+        <div class="prompt-input-group">
+          <input type="text" id="agentPromptInput" class="agent-input" placeholder="e.g. 'Buy a blue cotton t-shirt under ₹1000' or 'Buy luxury titanium watch'" />
+          <button id="btnSendPrompt" class="btn btn-primary">
+            <span>Send Task</span>
+          </button>
+        </div>
+
+        <div class="quick-prompts">
+          <span class="quick-label">Quick Scenarios:</span>
+          <button class="chip-btn" data-prompt="Buy a blue cotton t-shirt under ₹1000">👕 Blue Tee (₹799)</button>
+          <button class="chip-btn" data-prompt="Buy the ergonomic mechanical keyboard">⌨️ Keyboard (₹1999)</button>
+          <button class="chip-btn" data-prompt="Buy the luxury titanium smartwatch pro">⌚ Luxury Watch (₹8999)</button>
+          <button class="chip-btn" data-prompt="Buy the simulated timeout failure dongle">⚠️ Failure SKU (₹499.13)</button>
+        </div>
+
+        <div class="terminal-container">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">Agent Execution Trace & Gate Interception</span>
+            <button id="btnClearTerminal" class="btn-clear">Clear</button>
+          </div>
+          <div id="terminalBody" class="terminal-body">
+            <div class="terminal-line system-line">
+              <span class="t-time">[SYS]</span> AI Shopping Agent initialized. Connected to Mandate Gate.
+            </div>
+            <div class="terminal-line hint-line">
+              <span class="t-prompt">></span> Click any Quick Scenario above or enter a shopping request to see tool calls and gate interception in real-time.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Live Explainable Audit Trail -->
+      <section class="card audit-card">
+        <div class="card-header">
+          <div>
+            <h3>Live Explainable Audit Log</h3>
+            <p class="subtitle">Append-only immutable record of every decision, score delta, and firing rule</p>
+          </div>
+          <div class="audit-filter-group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="allowed">Allowed</button>
+            <button class="filter-btn" data-filter="blocked">Blocked</button>
+            <button class="filter-btn" data-filter="error">Errors</button>
+          </div>
+        </div>
+
+        <div class="audit-feed-wrapper">
+          <div id="auditLogFeed" class="audit-feed">
+            <!-- Dynamically populated entries -->
+            <div class="empty-state">Loading live audit trail...</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Stretch Feature: Side-by-Side Multi-Agent Comparison Matrix -->
+    <section class="card comparison-section">
+      <div class="card-header">
+        <div>
+          <h3>Adaptive Mandates Across Tiers (Live Multi-Agent Comparison)</h3>
+          <p class="subtitle">Demonstrating how identical shopping requests encounter dynamically different limits based on earned trust</p>
+        </div>
+        <span class="badge eval-badge">Stretch Feature</span>
+      </div>
+
+      <div id="multiAgentGrid" class="comparison-grid">
+        <!-- Bronze Card -->
+        <div class="comp-card comp-bronze">
+          <div class="comp-header">
+            <span class="comp-icon">🥉</span>
+            <div>
+              <span class="comp-title">Bronze Agent</span>
+              <span class="comp-score">Trust Score: 25 / 100</span>
+            </div>
+          </div>
+          <div class="comp-body">
+            <div class="comp-row"><span>Per-Txn Cap:</span> <strong>₹500</strong></div>
+            <div class="comp-row"><span>Daily Cap:</span> <strong>₹1,000</strong></div>
+            <div class="comp-row"><span>Allowed:</span> <span class="tag-mini">essentials only</span></div>
+            <div class="comp-outcome blocked-box">
+              ❌ Blocks ₹799 T-Shirt (exceeds cap & category)
+            </div>
+          </div>
+        </div>
+
+        <!-- Silver Card -->
+        <div class="comp-card comp-silver active-comp">
+          <div class="comp-header">
+            <span class="comp-icon">🥈</span>
+            <div>
+              <span class="comp-title">Silver Agent (Default)</span>
+              <span class="comp-score">Trust Score: 50 / 100</span>
+            </div>
+          </div>
+          <div class="comp-body">
+            <div class="comp-row"><span>Per-Txn Cap:</span> <strong>₹2,000</strong></div>
+            <div class="comp-row"><span>Daily Cap:</span> <strong>₹5,000</strong></div>
+            <div class="comp-row"><span>Allowed:</span> <span class="tag-mini">essentials, apparel, electronics</span></div>
+            <div class="comp-outcome allowed-box">
+              ✅ Approves ₹799 T-Shirt & ₹1999 Keyboard
+            </div>
+          </div>
+        </div>
+
+        <!-- Gold Card -->
+        <div class="comp-card comp-gold">
+          <div class="comp-header">
+            <span class="comp-icon">🥇</span>
+            <div>
+              <span class="comp-title">Gold Agent</span>
+              <span class="comp-score">Trust Score: 85 / 100</span>
+            </div>
+          </div>
+          <div class="comp-body">
+            <div class="comp-row"><span>Per-Txn Cap:</span> <strong>₹10,000</strong></div>
+            <div class="comp-row"><span>Daily Cap:</span> <strong>₹25,000</strong></div>
+            <div class="comp-row"><span>Allowed:</span> <span class="tag-mini">all categories (unrestricted)</span></div>
+            <div class="comp-outcome gold-box">
+              ⭐ Approves ₹8999 Titanium Watch & Luxury
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <strong>TrustRail</strong> — Razorpay AI Buildathon 2026 (Track 01: AI Growth & Agentic Commerce).
+        <span>Deterministic Rule Engine • Zero LLM in Enforcement Path • Append-Only Audit Trail</span>
+      </div>
+      <div class="footer-links">
+        <a href="/docs" target="_blank" class="footer-link">Swagger API Docs</a>
+        <a href="/catalog" target="_blank" class="footer-link">Catalog JSON</a>
+        <a href="/audit" target="_blank" class="footer-link">Audit Trail JSON</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
