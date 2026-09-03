@@ -1,5 +1,5 @@
 /**
- * TrustRail — Apple & Linear Interactive Experience
+ * TrustRail — Apple Cupertino Interactive Experience
  * Precision Activity Ring, Living Mandate Matrix, 4-Beat Controller, and Audit Ledger.
  */
 
@@ -23,12 +23,10 @@ const el = {
   tierPromotionHint: document.getElementById("tierPromotionHint"),
   tierPrivilegeSummary: document.getElementById("tierPrivilegeSummary"),
   
-  // Steps
+  // Timeline Steps
   stepBronze: document.getElementById("stepBronze"),
   stepSilver: document.getElementById("stepSilver"),
   stepGold: document.getElementById("stepGold"),
-  conn1: document.getElementById("conn1"),
-  conn2: document.getElementById("conn2"),
 
   // Mandate
   mandatePerTxnCap: document.getElementById("mandatePerTxnCap"),
@@ -38,7 +36,7 @@ const el = {
   spendPercentLabel: document.getElementById("spendPercentLabel"),
   categoryTagsContainer: document.getElementById("categoryTagsContainer"),
 
-  // Beats
+  // 4 Beats
   btnBeat1: document.getElementById("btnBeat1"),
   btnBeat2: document.getElementById("btnBeat2"),
   btnBeat3: document.getElementById("btnBeat3"),
@@ -49,11 +47,11 @@ const el = {
   btnSendPrompt: document.getElementById("btnSendPrompt"),
   terminalBody: document.getElementById("terminalBody"),
   btnClearTerminal: document.getElementById("btnClearTerminal"),
-  quickPromptChips: document.querySelectorAll(".linear-chip"),
+  quickPromptChips: document.querySelectorAll(".chip-item"),
 
-  // Audit Stream
+  // Audit Feed
   auditLogFeed: document.getElementById("auditLogFeed"),
-  filterBtns: document.querySelectorAll(".seg-btn"),
+  filterBtns: document.querySelectorAll(".seg-item"),
 };
 
 // ==========================================
@@ -63,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupEventListeners();
   refreshAll();
 
-  // Gentle Apple-grade polling for ledger updates
+  // Gentle Cupertino polling for ledger updates
   setInterval(() => {
     refreshAgentStatus(false);
     refreshAuditTrail(false);
@@ -150,40 +148,37 @@ function renderAgentStatus(data) {
   // 1. Numeric Score
   el.scoreValue.textContent = score;
 
-  // 2. Activity Ring Fill (Circumference = 2 * PI * 68 = 427)
-  const circumference = 427;
+  // 2. Activity Ring Fill (Circumference = 2 * PI * 66 = 415)
+  const circumference = 415;
   const offset = circumference - (circumference * score) / 100;
   el.gaugeProgress.style.strokeDashoffset = offset;
 
   // Dynamic Ring Gradient Stroke
   if (tier === "gold") {
-    el.gaugeProgress.style.stroke = "url(#ringGradientGold)";
-    el.gaugeProgress.style.filter = "drop-shadow(0 0 14px rgba(255, 159, 10, 0.5))";
+    el.gaugeProgress.style.stroke = "url(#ringGold)";
   } else if (tier === "silver") {
-    el.gaugeProgress.style.stroke = "url(#ringGradientSilver)";
-    el.gaugeProgress.style.filter = "drop-shadow(0 0 14px rgba(41, 151, 255, 0.45))";
+    el.gaugeProgress.style.stroke = "url(#ringSilver)";
   } else {
-    el.gaugeProgress.style.stroke = "url(#ringGradientBronze)";
-    el.gaugeProgress.style.filter = "drop-shadow(0 0 14px rgba(180, 83, 9, 0.4))";
+    el.gaugeProgress.style.stroke = "url(#ringBronze)";
   }
 
   // 3. Score Delta Pill
   const delta = score - STATE.previousScore;
   if (delta > 0) {
     el.scoreDeltaBadge.textContent = `+${delta}`;
-    el.scoreDeltaBadge.className = "apple-delta-badge delta-positive";
+    el.scoreDeltaBadge.className = "apple-badge badge-green";
   } else if (delta < 0) {
     el.scoreDeltaBadge.textContent = `${delta}`;
-    el.scoreDeltaBadge.className = "apple-delta-badge delta-negative";
+    el.scoreDeltaBadge.className = "apple-badge badge-red";
   } else {
     el.scoreDeltaBadge.textContent = "±0";
-    el.scoreDeltaBadge.className = "apple-delta-badge delta-neutral";
+    el.scoreDeltaBadge.className = "apple-badge badge-neutral";
   }
   STATE.previousScore = score;
 
   // 4. Tier Badge & Status
   el.tierBadge.textContent = tier.toUpperCase();
-  el.tierBadge.className = `tier-pill-badge tier-${tier}`;
+  el.tierBadge.className = `tier-pill-label tier-${tier}`;
 
   // Update Progression Steps UI
   updateProgressionUI(tier, score);
@@ -205,30 +200,30 @@ function renderAgentStatus(data) {
 
 function updateProgressionUI(tier, score) {
   // Clear step active states
-  el.stepBronze.classList.remove("active-step");
-  el.stepSilver.classList.remove("active-step");
-  el.stepGold.classList.remove("active-step");
+  el.stepBronze.classList.remove("active-tier");
+  el.stepSilver.classList.remove("active-tier");
+  el.stepGold.classList.remove("active-tier");
 
   if (tier === "gold") {
-    el.tierEmoji.textContent = "🥇";
-    el.stepGold.classList.add("active-step");
-    el.stepSilver.classList.add("active-step");
-    el.stepBronze.classList.add("active-step");
+    el.tierEmoji.textContent = "GOLD";
+    el.stepGold.classList.add("active-tier");
+    el.stepSilver.classList.add("active-tier");
+    el.stepBronze.classList.add("active-tier");
     el.tierProgressBar.style.width = "100%";
-    el.tierPromotionHint.innerHTML = "Status: <strong>Gold (Maximum Authority)</strong>. All categories unlocked.";
+    el.tierPromotionHint.innerHTML = "Authority: <strong>Gold (Maximum Authority)</strong>. All categories unlocked.";
     el.tierPrivilegeSummary.textContent = "Per-Txn Cap: ₹10,000 • Daily Cap: ₹25,000 • All Categories Unlocked (Luxury, Tech, Essentials).";
   } else if (tier === "silver") {
-    el.tierEmoji.textContent = "🥈";
-    el.stepSilver.classList.add("active-step");
-    el.stepBronze.classList.add("active-step");
+    el.tierEmoji.textContent = "SILVER";
+    el.stepSilver.classList.add("active-tier");
+    el.stepBronze.classList.add("active-tier");
     const percent = Math.min(100, Math.max(0, ((score - 40) / 30) * 100));
     el.tierProgressBar.style.width = `${percent}%`;
     const remaining = 70 - score;
     el.tierPromotionHint.innerHTML = `Need <strong>${remaining} more pts</strong> to reach Gold Tier.`;
     el.tierPrivilegeSummary.textContent = "Per-Txn Cap: ₹2,000 • Daily Cap: ₹5,000 • Essentials, Apparel, Electronics permitted.";
   } else {
-    el.tierEmoji.textContent = "🥉";
-    el.stepBronze.classList.add("active-step");
+    el.tierEmoji.textContent = "BRONZE";
+    el.stepBronze.classList.add("active-tier");
     const percent = Math.min(100, Math.max(0, (score / 40) * 100));
     el.tierProgressBar.style.width = `${percent}%`;
     const remaining = 40 - score;
@@ -244,7 +239,7 @@ function renderCategoryTags(allowedCategories, isUnrestricted) {
   allKnownCategories.forEach((cat) => {
     const isAllowed = isUnrestricted || allowedCategories.includes(cat);
     const span = document.createElement("span");
-    span.className = `apple-category-pill ${isAllowed ? "pill-active" : "pill-locked"}`;
+    span.className = `apple-cat-pill ${isAllowed ? "pill-on" : "pill-off"}`;
     span.textContent = isAllowed ? `✓ ${cat}` : `✕ ${cat} (locked)`;
     el.categoryTagsContainer.appendChild(span);
   });
@@ -273,7 +268,7 @@ function renderAuditLogs(logs) {
   }
 
   if (filtered.length === 0) {
-    el.auditLogFeed.innerHTML = `<div class="stream-empty">No ledger events recorded under this filter.</div>`;
+    el.auditLogFeed.innerHTML = `<div class="audit-empty-state">No ledger events recorded under this filter.</div>`;
     return;
   }
 
@@ -281,21 +276,21 @@ function renderAuditLogs(logs) {
   filtered.forEach((entry) => {
     const card = document.createElement("div");
     const dec = entry.decision.toLowerCase();
-    card.className = `audit-apple-item audit-border-${dec}`;
+    card.className = `audit-item edge-${dec}`;
 
     const dateStr = new Date(entry.timestamp).toLocaleTimeString();
     const scoreDiff = entry.score_after - entry.score_before;
     const diffDisplay = scoreDiff > 0 ? `+${scoreDiff}` : scoreDiff === 0 ? "±0" : `${scoreDiff}`;
 
     card.innerHTML = `
-      <div class="item-top">
-        <span class="item-badge badge-item-${dec}">${entry.decision}</span>
-        <span class="item-time">${dateStr} • ${entry.txn_id || "GATE-BLOCK"}</span>
+      <div class="audit-top-row">
+        <span class="audit-badge ${dec}">${entry.decision}</span>
+        <span class="audit-time">${dateStr} • ${entry.txn_id || "GATE-BLOCK"}</span>
       </div>
-      <div class="item-reason">
+      <div class="audit-reason-text">
         ${entry.reason}
       </div>
-      <div class="item-meta">
+      <div class="audit-footer-row">
         <span>Score: ${entry.score_before} → <strong>${entry.score_after}</strong> (${diffDisplay})</span>
         <span>Tier: ${entry.tier_before.toUpperCase()} → <strong>${entry.tier_after.toUpperCase()}</strong></span>
       </div>
