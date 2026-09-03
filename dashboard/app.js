@@ -1,6 +1,6 @@
 /**
- * TrustRail Interactive Dashboard Logic
- * Real-time gauge updates, 4-beat demo controller, agent runner, and explainable audit feed.
+ * TrustRail — Apple & Linear Interactive Experience
+ * Precision Activity Ring, Living Mandate Matrix, 4-Beat Controller, and Audit Ledger.
  */
 
 const STATE = {
@@ -10,7 +10,7 @@ const STATE = {
   previousScore: 50,
 };
 
-// DOM Elements
+// DOM Cache
 const el = {
   agentSelect: document.getElementById("agentSelect"),
   btnResetAgent: document.getElementById("btnResetAgent"),
@@ -21,27 +21,39 @@ const el = {
   tierEmoji: document.getElementById("tierEmoji"),
   tierProgressBar: document.getElementById("tierProgressBar"),
   tierPromotionHint: document.getElementById("tierPromotionHint"),
+  tierPrivilegeSummary: document.getElementById("tierPrivilegeSummary"),
+  
+  // Steps
+  stepBronze: document.getElementById("stepBronze"),
+  stepSilver: document.getElementById("stepSilver"),
+  stepGold: document.getElementById("stepGold"),
+  conn1: document.getElementById("conn1"),
+  conn2: document.getElementById("conn2"),
+
+  // Mandate
   mandatePerTxnCap: document.getElementById("mandatePerTxnCap"),
   mandateDailyCap: document.getElementById("mandateDailyCap"),
   mandateDailyRemaining: document.getElementById("mandateDailyRemaining"),
+  spendBarFill: document.getElementById("spendBarFill"),
+  spendPercentLabel: document.getElementById("spendPercentLabel"),
   categoryTagsContainer: document.getElementById("categoryTagsContainer"),
-  
+
   // Beats
   btnBeat1: document.getElementById("btnBeat1"),
   btnBeat2: document.getElementById("btnBeat2"),
   btnBeat3: document.getElementById("btnBeat3"),
   btnBeat4: document.getElementById("btnBeat4"),
 
-  // Terminal & Prompt
+  // Linear Command Bar & Terminal
   agentPromptInput: document.getElementById("agentPromptInput"),
   btnSendPrompt: document.getElementById("btnSendPrompt"),
   terminalBody: document.getElementById("terminalBody"),
   btnClearTerminal: document.getElementById("btnClearTerminal"),
-  quickPromptChips: document.querySelectorAll(".chip-btn"),
+  quickPromptChips: document.querySelectorAll(".linear-chip"),
 
-  // Audit Feed
+  // Audit Stream
   auditLogFeed: document.getElementById("auditLogFeed"),
-  filterBtns: document.querySelectorAll(".filter-btn"),
+  filterBtns: document.querySelectorAll(".seg-btn"),
 };
 
 // ==========================================
@@ -50,36 +62,38 @@ const el = {
 document.addEventListener("DOMContentLoaded", () => {
   setupEventListeners();
   refreshAll();
-  // Poll periodically for live changes
+
+  // Gentle Apple-grade polling for ledger updates
   setInterval(() => {
     refreshAgentStatus(false);
     refreshAuditTrail(false);
-  }, 3000);
+  }, 2500);
 });
 
 function setupEventListeners() {
-  // Agent selection
+  // Agent Selection
   el.agentSelect.addEventListener("change", (e) => {
     STATE.activeAgentId = e.target.value;
-    logToTerminal("system", `Switched active agent to: ${STATE.activeAgentId}`);
+    logToTerminal("system", `Active agent switched to ${STATE.activeAgentId}. Synchronizing mandate ledger.`);
     refreshAll();
   });
 
-  // Reset button
+  // Reset Button
   el.btnResetAgent.addEventListener("click", resetCurrentAgent);
 
-  // 4 Beats
+  // 4 Demo Beats
   el.btnBeat1.addEventListener("click", () => runDemoScenario("beat1_clean"));
   el.btnBeat2.addEventListener("click", () => runDemoScenario("beat2_tierup"));
   el.btnBeat3.addEventListener("click", () => runDemoScenario("beat3_blocked"));
   el.btnBeat4.addEventListener("click", () => runDemoScenario("beat4_failure"));
 
-  // Task Runner
+  // Command input
   el.btnSendPrompt.addEventListener("click", handleSendPrompt);
   el.agentPromptInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") handleSendPrompt();
   });
 
+  // Quick chips
   el.quickPromptChips.forEach((chip) => {
     chip.addEventListener("click", () => {
       const promptText = chip.getAttribute("data-prompt");
@@ -88,15 +102,16 @@ function setupEventListeners() {
     });
   });
 
+  // Terminal Clear
   el.btnClearTerminal.addEventListener("click", () => {
     el.terminalBody.innerHTML = `
-      <div class="terminal-line system-line">
-        <span class="t-time">[SYS]</span> Terminal cleared. Ready for agent shopping instructions.
+      <div class="console-line line-sys">
+        <span class="c-tag">[SYSTEM]</span> Console cleared. Ready for agent shopping instructions.
       </div>
     `;
   });
 
-  // Audit Filter
+  // Segmented Audit Filter
   el.filterBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       el.filterBtns.forEach((b) => b.classList.remove("active"));
@@ -108,7 +123,7 @@ function setupEventListeners() {
 }
 
 // ==========================================
-// API Interaction & State Updates
+// State Synchronization
 // ==========================================
 
 async function refreshAll() {
@@ -123,74 +138,103 @@ async function refreshAgentStatus(showAnimation = true) {
     const data = await res.json();
     renderAgentStatus(data, showAnimation);
   } catch (err) {
-    console.error("Failed to fetch agent status:", err);
+    console.error("Status fetch error:", err);
   }
 }
 
-function renderAgentStatus(data, animate = true) {
+function renderAgentStatus(data) {
   const score = data.trust_score;
   const tier = data.tier.toLowerCase();
   const mandate = data.mandate;
 
-  // Render Numeric Score & Gauge Fill
+  // 1. Numeric Score
   el.scoreValue.textContent = score;
 
-  // 314 is circumference of r=50 circle (2 * PI * 50)
-  const offset = 314 - (314 * score) / 100;
+  // 2. Activity Ring Fill (Circumference = 2 * PI * 68 = 427)
+  const circumference = 427;
+  const offset = circumference - (circumference * score) / 100;
   el.gaugeProgress.style.strokeDashoffset = offset;
 
-  // Gauge Color by Tier
+  // Dynamic Ring Gradient Stroke
   if (tier === "gold") {
-    el.gaugeProgress.style.stroke = "var(--tier-gold)";
+    el.gaugeProgress.style.stroke = "url(#ringGradientGold)";
+    el.gaugeProgress.style.filter = "drop-shadow(0 0 14px rgba(255, 159, 10, 0.5))";
   } else if (tier === "silver") {
-    el.gaugeProgress.style.stroke = "var(--rzp-blue)";
+    el.gaugeProgress.style.stroke = "url(#ringGradientSilver)";
+    el.gaugeProgress.style.filter = "drop-shadow(0 0 14px rgba(41, 151, 255, 0.45))";
   } else {
-    el.gaugeProgress.style.stroke = "var(--tier-bronze)";
+    el.gaugeProgress.style.stroke = "url(#ringGradientBronze)";
+    el.gaugeProgress.style.filter = "drop-shadow(0 0 14px rgba(180, 83, 9, 0.4))";
   }
 
-  // Delta Badge
+  // 3. Score Delta Pill
   const delta = score - STATE.previousScore;
   if (delta > 0) {
     el.scoreDeltaBadge.textContent = `+${delta}`;
-    el.scoreDeltaBadge.className = "delta-badge delta-positive";
+    el.scoreDeltaBadge.className = "apple-delta-badge delta-positive";
   } else if (delta < 0) {
     el.scoreDeltaBadge.textContent = `${delta}`;
-    el.scoreDeltaBadge.className = "delta-badge delta-negative";
+    el.scoreDeltaBadge.className = "apple-delta-badge delta-negative";
   } else {
     el.scoreDeltaBadge.textContent = "±0";
-    el.scoreDeltaBadge.className = "delta-badge delta-neutral";
+    el.scoreDeltaBadge.className = "apple-delta-badge delta-neutral";
   }
   STATE.previousScore = score;
 
-  // Tier Status Pill & Emoji
+  // 4. Tier Badge & Status
   el.tierBadge.textContent = tier.toUpperCase();
-  el.tierBadge.className = `tier-pill tier-${tier}`;
+  el.tierBadge.className = `tier-pill-badge tier-${tier}`;
+
+  // Update Progression Steps UI
+  updateProgressionUI(tier, score);
+
+  // 5. Mandate Display & Spend Utilization
+  el.mandatePerTxnCap.textContent = `₹${mandate.per_txn_cap.toLocaleString("en-IN")}`;
+  el.mandateDailyCap.textContent = `₹${mandate.daily_cap.toLocaleString("en-IN")}`;
+  el.mandateDailyRemaining.textContent = `₹${mandate.daily_remaining.toLocaleString("en-IN")} remaining`;
+
+  const spendUsed = mandate.daily_spent_today;
+  const totalCap = mandate.daily_cap;
+  const spendPercent = totalCap > 0 ? Math.min(100, Math.round((spendUsed / totalCap) * 100)) : 0;
+  el.spendBarFill.style.width = `${spendPercent}%`;
+  el.spendPercentLabel.textContent = `${spendPercent}% (₹${spendUsed.toLocaleString("en-IN")} used)`;
+
+  // Category tags
+  renderCategoryTags(mandate.allowed_categories, mandate.is_category_unrestricted);
+}
+
+function updateProgressionUI(tier, score) {
+  // Clear step active states
+  el.stepBronze.classList.remove("active-step");
+  el.stepSilver.classList.remove("active-step");
+  el.stepGold.classList.remove("active-step");
 
   if (tier === "gold") {
     el.tierEmoji.textContent = "🥇";
+    el.stepGold.classList.add("active-step");
+    el.stepSilver.classList.add("active-step");
+    el.stepBronze.classList.add("active-step");
     el.tierProgressBar.style.width = "100%";
-    el.tierPromotionHint.innerHTML = "Authority: <strong>Gold (Maximum Authority)</strong>. All categories unlocked.";
+    el.tierPromotionHint.innerHTML = "Status: <strong>Gold (Maximum Authority)</strong>. All categories unlocked.";
+    el.tierPrivilegeSummary.textContent = "Per-Txn Cap: ₹10,000 • Daily Cap: ₹25,000 • All Categories Unlocked (Luxury, Tech, Essentials).";
   } else if (tier === "silver") {
     el.tierEmoji.textContent = "🥈";
+    el.stepSilver.classList.add("active-step");
+    el.stepBronze.classList.add("active-step");
     const percent = Math.min(100, Math.max(0, ((score - 40) / 30) * 100));
     el.tierProgressBar.style.width = `${percent}%`;
     const remaining = 70 - score;
     el.tierPromotionHint.innerHTML = `Need <strong>${remaining} more pts</strong> to reach Gold Tier.`;
+    el.tierPrivilegeSummary.textContent = "Per-Txn Cap: ₹2,000 • Daily Cap: ₹5,000 • Essentials, Apparel, Electronics permitted.";
   } else {
     el.tierEmoji.textContent = "🥉";
+    el.stepBronze.classList.add("active-step");
     const percent = Math.min(100, Math.max(0, (score / 40) * 100));
     el.tierProgressBar.style.width = `${percent}%`;
     const remaining = 40 - score;
     el.tierPromotionHint.innerHTML = `Need <strong>${remaining} more pts</strong> to reach Silver Tier.`;
+    el.tierPrivilegeSummary.textContent = "Per-Txn Cap: ₹500 • Daily Cap: ₹1,000 • Essentials only. Higher categories locked.";
   }
-
-  // Mandate Limits
-  el.mandatePerTxnCap.textContent = `₹${mandate.per_txn_cap.toLocaleString("en-IN")}`;
-  el.mandateDailyCap.textContent = `₹${mandate.daily_cap.toLocaleString("en-IN")}`;
-  el.mandateDailyRemaining.textContent = `₹${mandate.daily_remaining.toLocaleString("en-IN")} remaining today`;
-
-  // Category tags
-  renderCategoryTags(mandate.allowed_categories, mandate.is_category_unrestricted);
 }
 
 function renderCategoryTags(allowedCategories, isUnrestricted) {
@@ -200,13 +244,17 @@ function renderCategoryTags(allowedCategories, isUnrestricted) {
   allKnownCategories.forEach((cat) => {
     const isAllowed = isUnrestricted || allowedCategories.includes(cat);
     const span = document.createElement("span");
-    span.className = `cat-tag ${isAllowed ? "active" : "disabled"}`;
+    span.className = `apple-category-pill ${isAllowed ? "pill-active" : "pill-locked"}`;
     span.textContent = isAllowed ? `✓ ${cat}` : `✕ ${cat} (locked)`;
     el.categoryTagsContainer.appendChild(span);
   });
 }
 
-async function refreshAuditTrail(showEmpty = false) {
+// ==========================================
+// Audit Stream Feed
+// ==========================================
+
+async function refreshAuditTrail() {
   try {
     const res = await fetch(`/api/audit?agent_id=${STATE.activeAgentId}&limit=50`);
     if (!res.ok) return;
@@ -214,7 +262,7 @@ async function refreshAuditTrail(showEmpty = false) {
     STATE.cachedLogs = logs;
     renderAuditLogs(logs);
   } catch (err) {
-    console.error("Failed to fetch audit logs:", err);
+    console.error("Audit fetch error:", err);
   }
 }
 
@@ -225,7 +273,7 @@ function renderAuditLogs(logs) {
   }
 
   if (filtered.length === 0) {
-    el.auditLogFeed.innerHTML = `<div class="empty-state">No audit events match current filter.</div>`;
+    el.auditLogFeed.innerHTML = `<div class="stream-empty">No ledger events recorded under this filter.</div>`;
     return;
   }
 
@@ -233,21 +281,21 @@ function renderAuditLogs(logs) {
   filtered.forEach((entry) => {
     const card = document.createElement("div");
     const dec = entry.decision.toLowerCase();
-    card.className = `audit-entry-card border-${dec}`;
+    card.className = `audit-apple-item audit-border-${dec}`;
 
     const dateStr = new Date(entry.timestamp).toLocaleTimeString();
     const scoreDiff = entry.score_after - entry.score_before;
     const diffDisplay = scoreDiff > 0 ? `+${scoreDiff}` : scoreDiff === 0 ? "±0" : `${scoreDiff}`;
 
     card.innerHTML = `
-      <div class="entry-top-row">
-        <span class="entry-badge entry-${dec}">${entry.decision}</span>
-        <span class="entry-time">${dateStr} • ${entry.txn_id || "GATE-BLOCK"}</span>
+      <div class="item-top">
+        <span class="item-badge badge-item-${dec}">${entry.decision}</span>
+        <span class="item-time">${dateStr} • ${entry.txn_id || "GATE-BLOCK"}</span>
       </div>
-      <div class="entry-reason">
+      <div class="item-reason">
         ${entry.reason}
       </div>
-      <div class="entry-meta-row">
+      <div class="item-meta">
         <span>Score: ${entry.score_before} → <strong>${entry.score_after}</strong> (${diffDisplay})</span>
         <span>Tier: ${entry.tier_before.toUpperCase()} → <strong>${entry.tier_after.toUpperCase()}</strong></span>
       </div>
@@ -257,34 +305,34 @@ function renderAuditLogs(logs) {
 }
 
 // ==========================================
-// Demo Beats Execution
+// 4 Demo Beats Execution
 // ==========================================
 
 async function runDemoScenario(scenarioName) {
   try {
-    logToTerminal("system", `Executing Demo Scenario: [${scenarioName}]...`);
+    logToTerminal("system", `Triggering demo sequence: [${scenarioName}]`);
     const res = await fetch(`/api/demo/scenario/${scenarioName}?agent_id=${STATE.activeAgentId}`, {
       method: "POST",
     });
     const data = await res.json();
 
     if (data.beat === 1) {
-      logToTerminal("allowed", `[BEAT 1 PASS] ${data.description}`);
-      logToTerminal("detail", `Order ID: ${data.result.razorpay_order_id} | Score: ${data.result.score_before} -> ${data.result.score_after} (+${data.result.score_delta})`);
+      logToTerminal("allowed", `[BEAT 1 APPROVED] ${data.description}`);
+      logToTerminal("detail", `Order ID: ${data.result.razorpay_order_id} • Score: ${data.result.score_before} → ${data.result.score_after} (+${data.result.score_delta})`);
     } else if (data.beat === 2) {
       logToTerminal("allowed", `[BEAT 2 TIER-UP] ${data.description}`);
-      logToTerminal("detail", `Agent promoted to: ${data.current_tier.toUpperCase()} with Score: ${data.current_score}!`);
+      logToTerminal("detail", `Promoted to ${data.current_tier.toUpperCase()} with Score ${data.current_score}. Mandate expanded.`);
     } else if (data.beat === 3) {
       logToTerminal("blocked", `[BEAT 3 BLOCKED] ${data.description}`);
-      logToTerminal("detail", `Gate Rule: "${data.result.reason}" | Score: ${data.result.score_before} -> ${data.result.score_after} (${data.result.score_delta})`);
+      logToTerminal("detail", `Rule: "${data.result.reason}" • Score: ${data.result.score_before} → ${data.result.score_after} (${data.result.score_delta})`);
     } else if (data.beat === 4) {
-      logToTerminal("error", `[BEAT 4 FAILURE RECOVERY] ${data.description}`);
-      logToTerminal("detail", `Result: 1 retry executed -> Clean abort -> Trust Score UNCHANGED (0 penalty applied!)`);
+      logToTerminal("error", `[BEAT 4 RESILIENCE] ${data.description}`);
+      logToTerminal("detail", `1 retry executed → Clean abort. Trust score UNCHANGED at ${data.result.score_after} (0 penalty).`);
     }
 
     await refreshAll();
   } catch (err) {
-    logToTerminal("error", `Failed to execute beat: ${err.message}`);
+    logToTerminal("error", `Demo beat failed: ${err.message}`);
   }
 }
 
@@ -299,12 +347,12 @@ async function resetCurrentAgent() {
     logToTerminal("system", `Agent ${STATE.activeAgentId} reset to baseline score 50 (Silver Tier).`);
     await refreshAll();
   } catch (err) {
-    console.error("Reset failed:", err);
+    console.error("Reset error:", err);
   }
 }
 
 // ==========================================
-// AI Buyer Agent Shopping Loop
+// Autonomous Agent Runner
 // ==========================================
 
 async function handleSendPrompt() {
@@ -313,7 +361,7 @@ async function handleSendPrompt() {
   el.agentPromptInput.value = "";
 
   logToTerminal("user", `User Prompt: "${prompt}"`);
-  logToTerminal("system", `AI Buyer Agent analyzing intent and initiating tool calling...`);
+  logToTerminal("system", `Agent initiating autonomous tool-calling loop...`);
 
   try {
     const res = await fetch(`/api/agent/${STATE.activeAgentId}/run-task`, {
@@ -323,7 +371,6 @@ async function handleSendPrompt() {
     });
     const data = await res.json();
 
-    // Render step-by-step tool traces
     if (data.steps) {
       data.steps.forEach((st) => {
         if (st.action === "call_tool") {
@@ -345,11 +392,10 @@ async function handleSendPrompt() {
       });
     }
 
-    // Render Agent's customer-facing final reply
-    logToTerminal("agent-reply", `💬 Agent: ${data.final_response}`);
+    logToTerminal("reply", `💬 Agent: ${data.final_response}`);
     await refreshAll();
   } catch (err) {
-    logToTerminal("error", `Agent execution error: ${err.message}`);
+    logToTerminal("error", `Agent loop error: ${err.message}`);
   }
 }
 
@@ -358,29 +404,29 @@ function logToTerminal(type, text) {
   const time = new Date().toLocaleTimeString();
 
   if (type === "user") {
-    line.className = "terminal-line user-line";
-    line.innerHTML = `<span class="t-prompt">👤</span> ${escapeHtml(text)}`;
+    line.className = "console-line line-user";
+    line.innerHTML = `<span class="c-prompt">👤 User:</span> ${escapeHtml(text)}`;
   } else if (type === "system") {
-    line.className = "terminal-line system-line";
-    line.innerHTML = `<span class="t-time">[${time}]</span> ${escapeHtml(text)}`;
+    line.className = "console-line line-sys";
+    line.innerHTML = `<span class="c-tag">[${time}]</span> ${escapeHtml(text)}`;
   } else if (type === "tool") {
-    line.className = "terminal-line tool-call-line";
-    line.innerHTML = `<span class="t-prompt">🔧</span> ${escapeHtml(text)}`;
+    line.className = "console-line line-tool";
+    line.innerHTML = `<span class="c-prompt">⚡</span> ${escapeHtml(text)}`;
   } else if (type === "allowed") {
-    line.className = "terminal-line gate-allowed-line";
-    line.innerHTML = `<span class="t-prompt">✅</span> ${escapeHtml(text)}`;
+    line.className = "console-line line-allowed";
+    line.innerHTML = `<span class="c-prompt">✓</span> ${escapeHtml(text)}`;
   } else if (type === "blocked") {
-    line.className = "terminal-line gate-blocked-line";
-    line.innerHTML = `<span class="t-prompt">🛡️</span> ${escapeHtml(text)}`;
+    line.className = "console-line line-blocked";
+    line.innerHTML = `<span class="c-prompt">⊘</span> ${escapeHtml(text)}`;
   } else if (type === "error") {
-    line.className = "terminal-line gate-error-line";
-    line.innerHTML = `<span class="t-prompt">⚠️</span> ${escapeHtml(text)}`;
-  } else if (type === "agent-reply") {
-    line.className = "terminal-line agent-reply-line";
+    line.className = "console-line line-error";
+    line.innerHTML = `<span class="c-prompt">⚠</span> ${escapeHtml(text)}`;
+  } else if (type === "reply") {
+    line.className = "console-line line-reply";
     line.innerHTML = `${escapeHtml(text)}`;
   } else {
-    line.className = "terminal-line hint-line";
-    line.innerHTML = `<span class="t-prompt">↳</span> ${escapeHtml(text)}`;
+    line.className = "console-line line-hint";
+    line.innerHTML = `<span class="c-prompt">↳</span> ${escapeHtml(text)}`;
   }
 
   el.terminalBody.appendChild(line);

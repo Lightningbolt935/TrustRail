@@ -1,356 +1,541 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TrustRail — Adaptive Permission Layer for AI Shopping Agents</title>
-  <meta name="description" content="Adaptive trust-based mandate gating for agentic commerce. Razorpay AI Buildathon 2026 Track 01." />
+  <meta name="description" content="Adaptive trust-based mandate gating for agentic commerce. Designed with Apple & Linear aesthetics." />
+  
+  <!-- Apple Font Stack & Inter Preload -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-  <!-- Top Navigation Bar -->
-  <header class="top-header">
-    <div class="header-left">
-      <div class="logo-mark">
-        <span class="logo-icon">⚡</span>
-        <div class="logo-text">
-          <span class="brand-title">Trust<span class="brand-accent">Rail</span></span>
-          <span class="brand-tag">Adaptive Permission Layer</span>
+  <!-- Ambient Background Lighting -->
+  <div class="ambient-canvas" aria-hidden="true">
+    <div class="ambient-glow glow-blue"></div>
+    <div class="ambient-glow glow-gold"></div>
+    <div class="ambient-glow glow-purple"></div>
+  </div>
+
+  <!-- Floating Apple-style Navigation Bar -->
+  <header class="nav-wrapper">
+    <nav class="nav-glass">
+      <div class="nav-brand">
+        <div class="brand-icon-box">
+          <svg class="brand-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">TrustRail</span>
+          <span class="brand-dot"></span>
+          <span class="brand-subtitle">Adaptive Permission Layer</span>
         </div>
       </div>
-      <span class="badge track-badge">Razorpay AI Buildathon 2026 • Track 01</span>
-    </div>
-    
-    <div class="header-right">
-      <div class="agent-selector-wrapper">
-        <label for="agentSelect" class="selector-label">Active Agent:</label>
-        <select id="agentSelect" class="agent-dropdown">
-          <option value="agent_001" selected>Agent 001 (Interactive Demo)</option>
-          <option value="agent_bronze">Agent Bronze (Score 25)</option>
-          <option value="agent_silver">Agent Silver (Score 50)</option>
-          <option value="agent_gold">Agent Gold (Score 85)</option>
-        </select>
+
+      <div class="nav-center">
+        <div class="track-pill">
+          <span class="track-indicator"></span>
+          <span>Razorpay AI Buildathon 2026 • Track 01</span>
+        </div>
       </div>
-      <button id="btnResetAgent" class="btn btn-secondary btn-sm" title="Reset Agent to Score 50">
-        <span class="icon">🔄</span> Reset State
-      </button>
-      <div class="live-pulse-container" title="System Operational & Gated">
-        <span class="pulse-dot"></span>
-        <span class="live-status-text">Gate Active</span>
+
+      <div class="nav-actions">
+        <div class="segmented-agent-control">
+          <label for="agentSelect" class="agent-label">Agent:</label>
+          <select id="agentSelect" class="apple-select">
+            <option value="agent_001" selected>Agent 001 (Interactive Demo)</option>
+            <option value="agent_bronze">Agent Bronze (Score 25)</option>
+            <option value="agent_silver">Agent Silver (Score 50)</option>
+            <option value="agent_gold">Agent Gold (Score 85)</option>
+          </select>
+        </div>
+
+        <button id="btnResetAgent" class="apple-btn apple-btn-secondary" title="Reset Agent State to Score 50">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+            <path d="M3 3v5h5" />
+          </svg>
+          <span>Reset</span>
+        </button>
+
+        <div class="live-status-pill">
+          <span class="status-dot"></span>
+          <span class="status-label">Gate Armed</span>
+        </div>
       </div>
-    </div>
+    </nav>
   </header>
 
-  <main class="main-container">
-    <!-- Hero / Metrics Overview -->
-    <section class="metrics-grid">
-      <!-- Trust Score Card -->
-      <div class="card metric-card score-card">
-        <div class="card-header">
-          <h3>Trust Score</h3>
-          <span id="scoreDeltaBadge" class="delta-badge delta-neutral">±0</span>
+  <main class="content-container">
+    <!-- Hero Header Text (Apple Style) -->
+    <section class="hero-intro">
+      <div class="hero-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Deterministic Agentic Commerce
+      </div>
+      <h1 class="hero-headline">Authority that expands with trust.</h1>
+      <p class="hero-subline">
+        Instead of static spend caps, TrustRail dynamically adjusts AI agent permissions based on transparent, deterministic risk underwriting. Zero LLMs in the financial enforcement path.
+      </p>
+    </section>
+
+    <!-- Bento Grid (Apple Keynote Layout) -->
+    <section class="bento-grid">
+      <!-- Bento 1: Trust Score Activity Ring -->
+      <div class="bento-card score-bento">
+        <div class="bento-header">
+          <div class="bento-title-group">
+            <span class="bento-eyebrow">Reputation Engine</span>
+            <h3>Trust Score</h3>
+          </div>
+          <span id="scoreDeltaBadge" class="apple-delta-badge delta-neutral">±0</span>
         </div>
-        <div class="score-display-wrapper">
-          <div class="gauge-container">
-            <svg class="gauge-svg" viewBox="0 0 120 120">
-              <circle class="gauge-bg" cx="60" cy="60" r="50" />
-              <circle id="gaugeProgress" class="gauge-fill" cx="60" cy="60" r="50" />
+
+        <div class="ring-stage">
+          <div class="apple-ring-container">
+            <svg class="ring-svg" viewBox="0 0 160 160">
+              <defs>
+                <linearGradient id="ringGradientSilver" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#2997ff" />
+                  <stop offset="100%" stop-color="#0071e3" />
+                </linearGradient>
+                <linearGradient id="ringGradientGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffd60a" />
+                  <stop offset="100%" stop-color="#ff9f0a" />
+                </linearGradient>
+                <linearGradient id="ringGradientBronze" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#f59e0b" />
+                  <stop offset="100%" stop-color="#b45309" />
+                </linearGradient>
+              </defs>
+              <circle class="ring-track" cx="80" cy="80" r="68" />
+              <circle id="gaugeProgress" class="ring-fill" cx="80" cy="80" r="68" />
             </svg>
-            <div class="gauge-content">
-              <span id="scoreValue" class="gauge-number">50</span>
-              <span class="gauge-max">/ 100</span>
+            <div class="ring-center">
+              <div id="scoreValue" class="ring-number">50</div>
+              <div class="ring-max">of 100</div>
             </div>
           </div>
-          <div class="score-meta">
-            <div class="meta-row">
-              <span class="meta-label">Deterministic Engine</span>
-              <span class="meta-val highlight-val">Zero LLM in Path</span>
+
+          <div class="ring-details">
+            <div class="spec-row">
+              <span class="spec-label">Enforcement Path</span>
+              <span class="spec-value text-accent">100% Deterministic</span>
             </div>
-            <div class="meta-row">
-              <span class="meta-label">Clean Rewards</span>
-              <span class="meta-val text-success">+8 pts / txn</span>
+            <div class="spec-row">
+              <span class="spec-label">Clean Txn Reward</span>
+              <span class="spec-value text-success">+8 pts / txn</span>
             </div>
-            <div class="meta-row">
-              <span class="meta-label">Violation Penalty</span>
-              <span class="meta-val text-danger">-15 pts (Overreach)</span>
+            <div class="spec-row">
+              <span class="spec-label">Overreach Penalty</span>
+              <span class="spec-value text-danger">-15 pts / block</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Gateway Failure</span>
+              <span class="spec-value text-muted">0 pts (Protected)</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Current Tier Card -->
-      <div class="card metric-card tier-card">
-        <div class="card-header">
-          <h3>Authority Tier</h3>
-          <span id="tierBadge" class="tier-pill tier-silver">SILVER</span>
-        </div>
-        <div class="tier-status-body">
-          <div class="tier-icon-container">
-            <span id="tierEmoji" class="tier-large-icon">🥈</span>
+      <!-- Bento 2: Living Mandate Matrix (Apple Card Aesthetic) -->
+      <div class="bento-card mandate-bento">
+        <div class="bento-header">
+          <div class="bento-title-group">
+            <span class="bento-eyebrow">Active Authorization</span>
+            <h3>Living Mandate</h3>
           </div>
-          <div class="tier-progress-section">
-            <div class="tier-labels">
-              <span class="tier-tag bronze-tag">Bronze (0-39)</span>
-              <span class="tier-tag silver-tag">Silver (40-69)</span>
-              <span class="tier-tag gold-tag">Gold (70-100)</span>
+          <span class="apple-tag apple-tag-blue">Gated Pre-Payment</span>
+        </div>
+
+        <div class="mandate-card-visual">
+          <div class="card-visual-header">
+            <div class="chip-graphic"></div>
+            <div class="tier-graphic-tag">
+              <span id="tierBadge" class="tier-pill-badge tier-silver">SILVER</span>
             </div>
+          </div>
+
+          <div class="caps-row">
+            <div class="cap-column">
+              <span class="cap-caption">Single-Txn Cap</span>
+              <div id="mandatePerTxnCap" class="cap-val">₹2,000</div>
+              <span class="cap-sub">Hard cutoff</span>
+            </div>
+            <div class="cap-column">
+              <span class="cap-caption">Daily Spend Cap</span>
+              <div id="mandateDailyCap" class="cap-val">₹5,000</div>
+              <span id="mandateDailyRemaining" class="cap-sub">₹5,000 remaining</span>
+            </div>
+          </div>
+
+          <div class="spend-bar-container">
+            <div class="spend-bar-labels">
+              <span>Daily Spend Utilization</span>
+              <span id="spendPercentLabel">0%</span>
+            </div>
+            <div class="spend-track">
+              <div id="spendBarFill" class="spend-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="categories-capsule-wrapper">
+          <span class="capsule-heading">Category Allowlist:</span>
+          <div id="categoryTagsContainer" class="apple-tags-row">
+            <span class="apple-category-pill pill-active">✓ essentials</span>
+            <span class="apple-category-pill pill-active">✓ apparel</span>
+            <span class="apple-category-pill pill-active">✓ electronics</span>
+            <span class="apple-category-pill pill-locked">✕ luxury (locked)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento 3: Authority Tier Progression -->
+      <div class="bento-card progression-bento">
+        <div class="bento-header">
+          <div class="bento-title-group">
+            <span class="bento-eyebrow">Tier Progression</span>
+            <h3>Authority Level</h3>
+          </div>
+          <div class="tier-symbol-wrapper">
+            <span id="tierEmoji" class="tier-symbol">🥈</span>
+          </div>
+        </div>
+
+        <div class="tier-steps-container">
+          <div class="tier-steps-visual">
+            <div class="tier-step step-bronze" id="stepBronze">
+              <div class="step-indicator"></div>
+              <div class="step-text">
+                <span class="step-name">Bronze</span>
+                <span class="step-range">0 – 39</span>
+              </div>
+            </div>
+            <div class="tier-connector conn-1" id="conn1"></div>
+            <div class="tier-step step-silver active-step" id="stepSilver">
+              <div class="step-indicator"></div>
+              <div class="step-text">
+                <span class="step-name">Silver</span>
+                <span class="step-range">40 – 69</span>
+              </div>
+            </div>
+            <div class="tier-connector conn-2" id="conn2"></div>
+            <div class="tier-step step-gold" id="stepGold">
+              <div class="step-indicator"></div>
+              <div class="step-text">
+                <span class="step-name">Gold</span>
+                <span class="step-range">70 – 100</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tier-progress-track-wrapper">
             <div class="tier-progress-track">
-              <div id="tierProgressBar" class="tier-progress-fill" style="width: 50%;"></div>
+              <div id="tierProgressBar" class="tier-progress-bar" style="width: 50%;"></div>
             </div>
-            <p id="tierPromotionHint" class="tier-hint">Need <strong>20 more pts</strong> to unlock Gold Tier</p>
+            <p id="tierPromotionHint" class="tier-subtext">Need <strong>20 more pts</strong> to reach Gold Tier</p>
           </div>
-        </div>
-      </div>
 
-      <!-- Live Mandate & Budget Card -->
-      <div class="card metric-card mandate-card">
-        <div class="card-header">
-          <h3>Live Mandate Limits</h3>
-          <span class="badge rule-badge">Enforced Pre-Razorpay</span>
-        </div>
-        <div class="mandate-details-grid">
-          <div class="limit-box">
-            <span class="limit-title">Single-Txn Cap</span>
-            <span id="mandatePerTxnCap" class="limit-amount">₹2,000</span>
-            <span class="limit-sub">Hard gate cutoff</span>
-          </div>
-          <div class="limit-box">
-            <span class="limit-title">Daily Spend Cap</span>
-            <span id="mandateDailyCap" class="limit-amount">₹5,000</span>
-            <span id="mandateDailyRemaining" class="limit-sub">₹5,000 remaining</span>
-          </div>
-        </div>
-        <div class="category-allowlist-section">
-          <span class="categories-label">Permitted Categories:</span>
-          <div id="categoryTagsContainer" class="category-tags">
-            <span class="cat-tag active">essentials</span>
-            <span class="cat-tag active">apparel</span>
-            <span class="cat-tag active">electronics</span>
-            <span class="cat-tag disabled">luxury (locked)</span>
+          <div class="tier-unlocked-card">
+            <div class="unlocked-title">Current Privileges:</div>
+            <div class="unlocked-details" id="tierPrivilegeSummary">
+              Per-Txn Cap: ₹2,000 • Essentials, Apparel, Electronics permitted.
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Pitch Video 4-Beat Controller -->
-    <section class="card demo-controller-section">
-      <div class="section-title-bar">
-        <div>
-          <h2>Demo Script Controller (4 Key Beats)</h2>
-          <p class="subtitle">Execute the exact 4-beat pitch script in 45 seconds to showcase deterministic adaptive gating.</p>
+    <!-- Pitch Video 4-Beat Controller (Apple Feature Grid) -->
+    <section class="feature-deck-section">
+      <div class="deck-header">
+        <div class="deck-title-block">
+          <span class="deck-eyebrow">Evaluation Showcase</span>
+          <h2>4-Beat Demo Script Controller</h2>
+          <p class="deck-subtext">
+            Execute the exact 45-second pitch sequence demonstrating adaptive expansion, pre-payment gating, and failure recovery.
+          </p>
         </div>
-        <span class="badge eval-badge">Track 01 Evaluation Showcase</span>
+        <div class="deck-runtime-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          45s Sequence
+        </div>
       </div>
 
-      <div class="beat-cards-grid">
-        <!-- Beat 1 -->
-        <div class="beat-card" id="cardBeat1">
-          <div class="beat-header">
-            <span class="beat-number">Beat 1</span>
-            <span class="badge badge-success">+8 Score</span>
+      <div class="beats-grid">
+        <!-- Beat 1 Card -->
+        <div class="beat-apple-card" id="cardBeat1">
+          <div class="beat-card-top">
+            <span class="beat-pill">Beat 01</span>
+            <span class="apple-badge badge-green">+8 Score</span>
+          </div>
+          <div class="beat-icon-wrap icon-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
           </div>
           <h4>Clean Transaction</h4>
-          <p class="beat-desc">Purchases Blue Cotton Tee (₹799) within Silver cap. Gate approves & rewards trust.</p>
-          <button id="btnBeat1" class="btn btn-primary btn-block">
-            ▶ Run Beat 1 (Clean Txn)
+          <p>Agent purchases Blue Cotton Tee (₹799) within Silver cap. Gate approves & rewards +8 trust.</p>
+          <button id="btnBeat1" class="apple-action-btn btn-action-green">
+            <span>Run Beat 1</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
 
-        <!-- Beat 2 -->
-        <div class="beat-card" id="cardBeat2">
-          <div class="beat-header">
-            <span class="beat-number">Beat 2</span>
-            <span class="badge badge-gold">Tier-Up to Gold</span>
+        <!-- Beat 2 Card -->
+        <div class="beat-apple-card" id="cardBeat2">
+          <div class="beat-card-top">
+            <span class="beat-pill">Beat 02</span>
+            <span class="apple-badge badge-gold">Promote to Gold</span>
           </div>
-          <h4>Tier Expansion</h4>
-          <p class="beat-desc">Accumulates clean track record (Score >= 70). Authority unlocks ₹10,000 cap & luxury!</p>
-          <button id="btnBeat2" class="btn btn-gold btn-block">
-            ▶ Run Beat 2 (Promote to Gold)
+          <div class="beat-icon-wrap icon-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h4>Autonomous Tier-Up</h4>
+          <p>Sequence pushes score >= 70. Authority expands to ₹10,000 cap and unlocks luxury category.</p>
+          <button id="btnBeat2" class="apple-action-btn btn-action-gold">
+            <span>Run Beat 2</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
 
-        <!-- Beat 3 -->
-        <div class="beat-card" id="cardBeat3">
-          <div class="beat-header">
-            <span class="beat-number">Beat 3</span>
-            <span class="badge badge-danger">-15 Penalty</span>
+        <!-- Beat 3 Card -->
+        <div class="beat-apple-card" id="cardBeat3">
+          <div class="beat-card-top">
+            <span class="beat-pill">Beat 03</span>
+            <span class="apple-badge badge-red">-15 Penalty</span>
+          </div>
+          <div class="beat-icon-wrap icon-red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
           </div>
           <h4>Blocked Overreach</h4>
-          <p class="beat-desc">Attempts ₹8,999 Titanium Watch while Silver. Gate blocks attempt before Razorpay.</p>
-          <button id="btnBeat3" class="btn btn-danger btn-block">
-            ▶ Run Beat 3 (Blocked Overreach)
+          <p>Agent attempts ₹8,999 Titanium Watch while Silver. Gate blocks attempt before Razorpay is called.</p>
+          <button id="btnBeat3" class="apple-action-btn btn-action-red">
+            <span>Run Beat 3</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
 
-        <!-- Beat 4 -->
-        <div class="beat-card" id="cardBeat4">
-          <div class="beat-header">
-            <span class="beat-number">Beat 4</span>
-            <span class="badge badge-amber">0 Penalty Abort</span>
+        <!-- Beat 4 Card -->
+        <div class="beat-apple-card" id="cardBeat4">
+          <div class="beat-card-top">
+            <span class="beat-pill">Beat 04</span>
+            <span class="apple-badge badge-amber">0 Penalty Abort</span>
+          </div>
+          <div class="beat-icon-wrap icon-amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </div>
           <h4>Failure Recovery</h4>
-          <p class="beat-desc">Simulated Razorpay timeout: 1 retry → clean abort with <strong>0 trust penalty</strong>!</p>
-          <button id="btnBeat4" class="btn btn-amber btn-block">
-            ▶ Run Beat 4 (Gateway Failure)
+          <p>Gateway timeout triggers 1 retry → clean abort. <strong>Zero penalty</strong> applied (system error ≠ agent fault).</p>
+          <button id="btnBeat4" class="apple-action-btn btn-action-amber">
+            <span>Run Beat 4</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
       </div>
     </section>
 
-    <!-- Two-Column Workbench: Agent Runner & Live Audit Trail -->
-    <div class="workbench-grid">
-      <!-- AI Buyer Agent Interactive Terminal -->
-      <section class="card agent-terminal-card">
-        <div class="card-header">
-          <div>
-            <h3>Autonomous AI Buyer Agent</h3>
-            <p class="subtitle">LLM tool-calling loop: list_products → get_product → attempt_purchase</p>
+    <!-- Interactive Workbench: Agent Command Center & Explainable Audit Log -->
+    <div class="dual-workbench-layout">
+      <!-- Left: AI Buyer Agent Command Center (Linear / macOS Terminal Aesthetic) -->
+      <section class="workbench-panel agent-panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-eyebrow">Autonomous Reasoning</span>
+            <h3>AI Buyer Agent Terminal</h3>
           </div>
-          <span class="badge badge-tool">3 Strict Tools</span>
+          <span class="apple-tag apple-tag-mono">3 Bounded Tools</span>
         </div>
 
-        <div class="prompt-input-group">
-          <input type="text" id="agentPromptInput" class="agent-input" placeholder="e.g. 'Buy a blue cotton t-shirt under ₹1000' or 'Buy luxury titanium watch'" />
-          <button id="btnSendPrompt" class="btn btn-primary">
-            <span>Send Task</span>
+        <!-- Linear Style Command Input -->
+        <div class="linear-command-bar">
+          <svg class="command-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="agentPromptInput" class="linear-input" placeholder="Give agent a shopping task, e.g. 'Buy a blue cotton t-shirt under ₹1000'..." autocomplete="off" />
+          <button id="btnSendPrompt" class="linear-submit-btn">
+            <span>Execute</span>
+            <span class="key-shortcut">↵</span>
           </button>
         </div>
 
-        <div class="quick-prompts">
-          <span class="quick-label">Quick Scenarios:</span>
-          <button class="chip-btn" data-prompt="Buy a blue cotton t-shirt under ₹1000">👕 Blue Tee (₹799)</button>
-          <button class="chip-btn" data-prompt="Buy the ergonomic mechanical keyboard">⌨️ Keyboard (₹1999)</button>
-          <button class="chip-btn" data-prompt="Buy the luxury titanium smartwatch pro">⌚ Luxury Watch (₹8999)</button>
-          <button class="chip-btn" data-prompt="Buy the simulated timeout failure dongle">⚠️ Failure SKU (₹499.13)</button>
+        <!-- Apple Style Quick Filter Chips -->
+        <div class="chip-scroller">
+          <button class="linear-chip" data-prompt="Buy a blue cotton t-shirt under ₹1000">
+            <span class="chip-dot"></span> Blue Tee (₹799)
+          </button>
+          <button class="linear-chip" data-prompt="Buy the ergonomic mechanical keyboard">
+            <span class="chip-dot"></span> Keyboard (₹1999)
+          </button>
+          <button class="linear-chip" data-prompt="Buy the luxury titanium smartwatch pro">
+            <span class="chip-dot"></span> Luxury Watch (₹8999)
+          </button>
+          <button class="linear-chip" data-prompt="Buy the simulated timeout failure dongle">
+            <span class="chip-dot chip-amber"></span> Failure SKU (₹499.13)
+          </button>
         </div>
 
-        <div class="terminal-container">
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-title">Agent Execution Trace & Gate Interception</span>
-            <button id="btnClearTerminal" class="btn-clear">Clear</button>
-          </div>
-          <div id="terminalBody" class="terminal-body">
-            <div class="terminal-line system-line">
-              <span class="t-time">[SYS]</span> AI Shopping Agent initialized. Connected to Mandate Gate.
+        <!-- macOS Xcode/Terminal Window -->
+        <div class="macos-window">
+          <div class="window-titlebar">
+            <div class="traffic-lights">
+              <span class="tl-dot tl-red"></span>
+              <span class="tl-dot tl-yellow"></span>
+              <span class="tl-dot tl-green"></span>
             </div>
-            <div class="terminal-line hint-line">
-              <span class="t-prompt">></span> Click any Quick Scenario above or enter a shopping request to see tool calls and gate interception in real-time.
+            <span class="window-title">agent_runner.py — Tool Execution Trace</span>
+            <button id="btnClearTerminal" class="window-action-btn" title="Clear Console">Clear</button>
+          </div>
+          <div id="terminalBody" class="window-console">
+            <div class="console-line line-sys">
+              <span class="c-tag">[SYSTEM]</span> Agent initialized. Connected to Mandate Gate at localhost:8000.
+            </div>
+            <div class="console-line line-hint">
+              <span class="c-prompt">↳</span> Click any quick scenario above or enter a task prompt to see tool calling and gate interception in real-time.
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Live Explainable Audit Trail -->
-      <section class="card audit-card">
-        <div class="card-header">
-          <div>
-            <h3>Live Explainable Audit Log</h3>
-            <p class="subtitle">Append-only immutable record of every decision, score delta, and firing rule</p>
+      <!-- Right: Live Explainable Audit Trail (Apple Health / Activity Card Aesthetic) -->
+      <section class="workbench-panel audit-panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-eyebrow">Immutable Ledger</span>
+            <h3>Explainable Audit Trail</h3>
           </div>
-          <div class="audit-filter-group">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="allowed">Allowed</button>
-            <button class="filter-btn" data-filter="blocked">Blocked</button>
-            <button class="filter-btn" data-filter="error">Errors</button>
+          
+          <!-- Segmented Filter Control -->
+          <div class="apple-segmented-filter">
+            <button class="seg-btn active" data-filter="all">All</button>
+            <button class="seg-btn" data-filter="allowed">Allowed</button>
+            <button class="seg-btn" data-filter="blocked">Blocked</button>
+            <button class="seg-btn" data-filter="error">Errors</button>
           </div>
         </div>
 
-        <div class="audit-feed-wrapper">
-          <div id="auditLogFeed" class="audit-feed">
-            <!-- Dynamically populated entries -->
-            <div class="empty-state">Loading live audit trail...</div>
+        <!-- Real-time Feed Container -->
+        <div class="audit-stream-container">
+          <div id="auditLogFeed" class="audit-stream">
+            <div class="stream-empty">Loading live ledger events...</div>
           </div>
         </div>
       </section>
     </div>
 
-    <!-- Stretch Feature: Side-by-Side Multi-Agent Comparison Matrix -->
-    <section class="card comparison-section">
-      <div class="card-header">
-        <div>
-          <h3>Adaptive Mandates Across Tiers (Live Multi-Agent Comparison)</h3>
-          <p class="subtitle">Demonstrating how identical shopping requests encounter dynamically different limits based on earned trust</p>
+    <!-- Stretch Feature: Apple Compare Matrix (Bronze vs Silver vs Gold) -->
+    <section class="comparison-deck">
+      <div class="deck-header">
+        <div class="deck-title-block">
+          <span class="deck-eyebrow">Adaptive Underwriting</span>
+          <h2>Mandate Comparison Across Tiers</h2>
+          <p class="deck-subtext">
+            Demonstrating how identical shopping requests encounter dynamically different limits based on earned trust.
+          </p>
         </div>
-        <span class="badge eval-badge">Stretch Feature</span>
       </div>
 
-      <div id="multiAgentGrid" class="comparison-grid">
+      <div class="compare-grid">
         <!-- Bronze Card -->
-        <div class="comp-card comp-bronze">
-          <div class="comp-header">
-            <span class="comp-icon">🥉</span>
-            <div>
-              <span class="comp-title">Bronze Agent</span>
-              <span class="comp-score">Trust Score: 25 / 100</span>
+        <div class="compare-card compare-bronze">
+          <div class="compare-badge">Tier 01</div>
+          <div class="compare-top">
+            <div class="compare-tier-title">Bronze</div>
+            <div class="compare-score-range">Score 0 – 39</div>
+          </div>
+          <div class="compare-specs">
+            <div class="c-spec">
+              <span>Per-Txn Cap</span>
+              <strong>₹500</strong>
+            </div>
+            <div class="c-spec">
+              <span>Daily Limit</span>
+              <strong>₹1,000</strong>
+            </div>
+            <div class="c-spec">
+              <span>Categories</span>
+              <span class="spec-pill">Essentials only</span>
             </div>
           </div>
-          <div class="comp-body">
-            <div class="comp-row"><span>Per-Txn Cap:</span> <strong>₹500</strong></div>
-            <div class="comp-row"><span>Daily Cap:</span> <strong>₹1,000</strong></div>
-            <div class="comp-row"><span>Allowed:</span> <span class="tag-mini">essentials only</span></div>
-            <div class="comp-outcome blocked-box">
-              ❌ Blocks ₹799 T-Shirt (exceeds cap & category)
-            </div>
+          <div class="compare-result result-blocked">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span>Blocks ₹799 T-Shirt (exceeds cap & category)</span>
           </div>
         </div>
 
-        <!-- Silver Card -->
-        <div class="comp-card comp-silver active-comp">
-          <div class="comp-header">
-            <span class="comp-icon">🥈</span>
-            <div>
-              <span class="comp-title">Silver Agent (Default)</span>
-              <span class="comp-score">Trust Score: 50 / 100</span>
+        <!-- Silver Card (Active Default) -->
+        <div class="compare-card compare-silver current-tier-card">
+          <div class="compare-badge badge-active">Default Baseline</div>
+          <div class="compare-top">
+            <div class="compare-tier-title">Silver</div>
+            <div class="compare-score-range">Score 40 – 69</div>
+          </div>
+          <div class="compare-specs">
+            <div class="c-spec">
+              <span>Per-Txn Cap</span>
+              <strong>₹2,000</strong>
+            </div>
+            <div class="c-spec">
+              <span>Daily Limit</span>
+              <strong>₹5,000</strong>
+            </div>
+            <div class="c-spec">
+              <span>Categories</span>
+              <span class="spec-pill">Essentials, Apparel, Electronics</span>
             </div>
           </div>
-          <div class="comp-body">
-            <div class="comp-row"><span>Per-Txn Cap:</span> <strong>₹2,000</strong></div>
-            <div class="comp-row"><span>Daily Cap:</span> <strong>₹5,000</strong></div>
-            <div class="comp-row"><span>Allowed:</span> <span class="tag-mini">essentials, apparel, electronics</span></div>
-            <div class="comp-outcome allowed-box">
-              ✅ Approves ₹799 T-Shirt & ₹1999 Keyboard
-            </div>
+          <div class="compare-result result-allowed">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Approves ₹799 Tee & ₹1999 Keyboard</span>
           </div>
         </div>
 
         <!-- Gold Card -->
-        <div class="comp-card comp-gold">
-          <div class="comp-header">
-            <span class="comp-icon">🥇</span>
-            <div>
-              <span class="comp-title">Gold Agent</span>
-              <span class="comp-score">Trust Score: 85 / 100</span>
+        <div class="compare-card compare-gold">
+          <div class="compare-badge badge-gold">Maximum Authority</div>
+          <div class="compare-top">
+            <div class="compare-tier-title">Gold</div>
+            <div class="compare-score-range">Score 70 – 100</div>
+          </div>
+          <div class="compare-specs">
+            <div class="c-spec">
+              <span>Per-Txn Cap</span>
+              <strong>₹10,000</strong>
+            </div>
+            <div class="c-spec">
+              <span>Daily Limit</span>
+              <strong>₹25,000</strong>
+            </div>
+            <div class="c-spec">
+              <span>Categories</span>
+              <span class="spec-pill pill-gold">All Categories (Unrestricted)</span>
             </div>
           </div>
-          <div class="comp-body">
-            <div class="comp-row"><span>Per-Txn Cap:</span> <strong>₹10,000</strong></div>
-            <div class="comp-row"><span>Daily Cap:</span> <strong>₹25,000</strong></div>
-            <div class="comp-row"><span>Allowed:</span> <span class="tag-mini">all categories (unrestricted)</span></div>
-            <div class="comp-outcome gold-box">
-              ⭐ Approves ₹8999 Titanium Watch & Luxury
-            </div>
+          <div class="compare-result result-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Approves ₹8999 Titanium Watch & Luxury</span>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="app-footer">
-    <div class="footer-content">
-      <div class="footer-left">
-        <strong>TrustRail</strong> — Razorpay AI Buildathon 2026 (Track 01: AI Growth & Agentic Commerce).
-        <span>Deterministic Rule Engine • Zero LLM in Enforcement Path • Append-Only Audit Trail</span>
+  <!-- Apple Minimalist Footer -->
+  <footer class="apple-footer">
+    <div class="footer-inner">
+      <div class="footer-brand-line">
+        <span class="f-brand">TrustRail</span>
+        <span class="f-sep">•</span>
+        <span>Razorpay AI Buildathon 2026 (Track 01: AI Growth & Agentic Commerce)</span>
       </div>
       <div class="footer-links">
-        <a href="/docs" target="_blank" class="footer-link">Swagger API Docs</a>
-        <a href="/catalog" target="_blank" class="footer-link">Catalog JSON</a>
-        <a href="/audit" target="_blank" class="footer-link">Audit Trail JSON</a>
+        <a href="/docs" target="_blank">Interactive Swagger Docs</a>
+        <a href="/catalog" target="_blank">Catalog JSON</a>
+        <a href="/audit" target="_blank">Audit Trail JSON</a>
       </div>
     </div>
   </footer>
